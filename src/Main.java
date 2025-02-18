@@ -1,9 +1,13 @@
+import javax.swing.*;
+
 public class Main {
 
 
 
 
 int eyad = 1;
+    private JPanel panel1;
+    private JLabel label1;
 //helloooo test
 
 
