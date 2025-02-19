@@ -15,14 +15,18 @@ public class Main {
     private JLabel label1;
     private JComboBox comboBox1;
     private JTextArea textArea1;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton a1Button;
+    private JButton saveLogButton;
+    private JButton exitButton1;
+    private JButton clearLogButton;
+    private JButton refreshTimeButton;
+    private JTabbedPane Options;
+    private JPanel CalendarView;
+    private JPanel ListView;
 
     public Main(){
 
 
+        //For Log Panel
         logMoodButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,6 +35,21 @@ public class Main {
             }
         });
 
+        exitButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                basePanel.setVisible(true);
+                logPanel.setVisible(false);
+            }
+        });
+
+        moodHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                basePanel.setVisible(false);
+                historyPanel.setVisible(true);
+            }
+        });
     }
 
 
