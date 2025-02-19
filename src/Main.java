@@ -22,6 +22,14 @@ public class Main {
     private JTabbedPane Options;
     private JPanel CalendarView;
     private JPanel ListView;
+    private JButton backButton;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
+    private JButton button1;
+    private JButton button5;
+    private JButton button6;
+    private JButton backButton1;
 
     public Main(){
 
@@ -48,6 +56,20 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 basePanel.setVisible(false);
                 historyPanel.setVisible(true);
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                basePanel.setVisible(true);
+                historyPanel.setVisible(false);
+            }
+        });
+        backButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                basePanel.setVisible(true);
+                historyPanel.setVisible(false);
             }
         });
     }
