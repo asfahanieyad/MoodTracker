@@ -23,13 +23,16 @@ public class Main {
     private JPanel CalendarView;
     private JPanel ListView;
     private JButton backButton;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button1;
-    private JButton button5;
-    private JButton button6;
+    private JButton exportHistoryButton;
+    private JButton clearHistoryButton;
+    private JButton logMoodButton1;
+    private JButton logMoodButton2;
+    private JButton clearHistoryButton1;
+    private JButton exportHistoryButton1;
     private JButton backButton1;
+    private JRadioButton lightRadioButton;
+    private JRadioButton darkRadioButton;
+    private JTextField textField1;
 
     public Main(){
 
