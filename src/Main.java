@@ -14,7 +14,7 @@ public class Main {
     private JButton logMoodButton;
     private JLabel label1;
     private JComboBox comboBox1;
-    private JTextArea textArea1;
+    private JTextArea logTxt;
     private JButton saveLogButton;
     private JButton exitButton1;
     private JButton clearLogButton;
@@ -32,7 +32,10 @@ public class Main {
     private JButton backButton1;
     private JRadioButton lightRadioButton;
     private JRadioButton darkRadioButton;
-    private JTextField textField1;
+    private JTextField enterFileHereTextField;
+    private JButton saveButton;
+    private JButton resetButton;
+    private JButton backButton2;
 
     public Main(){
 
@@ -61,6 +64,7 @@ public class Main {
                 historyPanel.setVisible(true);
             }
         });
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,11 +72,44 @@ public class Main {
                 historyPanel.setVisible(false);
             }
         });
+
         backButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 basePanel.setVisible(true);
                 historyPanel.setVisible(false);
+            }
+        });
+
+        logMoodButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                historyPanel.setVisible(false);
+                logPanel.setVisible(true);
+            }
+        });
+
+        logMoodButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                historyPanel.setVisible(false);
+                logPanel.setVisible(true);
+            }
+        });
+
+        backButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                settingsPanel.setVisible(false);
+                basePanel.setVisible(true);
+            }
+        });
+
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                settingsPanel.setVisible(true);
+                basePanel.setVisible(false);
             }
         });
     }
@@ -85,6 +122,5 @@ public class Main {
         frame.setSize(650, 600);
         frame.setLocation(400, 200);
         frame.setVisible(true);
-
     }
 }

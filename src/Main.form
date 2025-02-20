@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Main">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="668" height="414"/>
+      <xy x="20" y="20" width="668" height="448"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -133,16 +133,22 @@
               <grid row="2" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-12415003"/>
+            </properties>
           </component>
-          <component id="fc5c8" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+          <component id="fc5c8" class="javax.swing.JTextArea" binding="logTxt">
             <constraints>
               <grid row="3" column="3" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
               </grid>
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-12415003"/>
+              <foreground color="-16777216"/>
+              <text value="Enter Text Here"/>
+            </properties>
           </component>
           <component id="9eb1b" class="javax.swing.JButton" binding="saveLogButton" default-binding="true">
             <constraints>
@@ -250,6 +256,8 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Back"/>
                     </properties>
                   </component>
@@ -265,6 +273,8 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Export History"/>
                     </properties>
                   </component>
@@ -275,6 +285,8 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Clear History"/>
                     </properties>
                   </component>
@@ -285,6 +297,8 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Log Mood"/>
                     </properties>
                   </component>
@@ -316,6 +330,8 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Log Mood"/>
                     </properties>
                   </component>
@@ -324,6 +340,8 @@
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Clear History"/>
                     </properties>
                   </component>
@@ -332,6 +350,8 @@
                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Export History"/>
                     </properties>
                   </component>
@@ -340,6 +360,8 @@
                       <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-12415003"/>
+                      <foreground color="-16777216"/>
                       <text value="Back"/>
                     </properties>
                   </component>
@@ -409,14 +431,52 @@
               <text value="Theme:"/>
             </properties>
           </component>
-          <component id="a244d" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+          <component id="a244d" class="javax.swing.JTextField" binding="enterFileHereTextField" default-binding="true">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="3" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
-              <gridbag weightx="0.0" weighty="1.0"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-12415003"/>
+              <foreground color="-16777216"/>
+              <preferredSize width="250" height="34"/>
+              <text value="&quot;Enter File Here&quot;"/>
+            </properties>
+          </component>
+          <component id="e3cbc" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.5" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <background color="-12415003"/>
+              <foreground color="-16777216"/>
+              <text value="Save"/>
+            </properties>
+          </component>
+          <component id="ad3ba" class="javax.swing.JButton" binding="resetButton" default-binding="true">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="3.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <background color="-12415003"/>
+              <foreground color="-16777216"/>
+              <text value="Reset"/>
+            </properties>
+          </component>
+          <component id="6c7e9" class="javax.swing.JButton" binding="backButton2" default-binding="true">
+            <constraints>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="3.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <background color="-12415003"/>
+              <foreground color="-16777216"/>
+              <text value="Back"/>
+            </properties>
           </component>
           <component id="7f7f3" class="javax.swing.JLabel">
             <constraints>
@@ -426,6 +486,7 @@
             <properties>
               <font size="20"/>
               <foreground color="-16777216"/>
+              <horizontalTextPosition value="11"/>
               <text value="Log File:"/>
             </properties>
           </component>
