@@ -32,15 +32,32 @@ public class Main {
     private JButton backButton1;
     private JRadioButton lightRadioButton;
     private JRadioButton darkRadioButton;
-    private JTextField enterFileHereTextField;
+    private JTextField fileTxt;
     private JButton saveButton;
     private JButton resetButton;
     private JButton backButton2;
 
+    String logFile;
+
+    void setTheme(int x){
+        if (x == 0){
+
+            //Keep colors as is (Light Mode)
+
+        }
+
+        if (x == 1){
+
+            //Make the theme dark
+
+        }
+
+    }
+
     public Main(){
 
+        lightRadioButton.setSelected(true);
 
-        //For Log Panel
         logMoodButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,6 +127,48 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 settingsPanel.setVisible(true);
                 basePanel.setVisible(false);
+            }
+        });
+
+        lightRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                darkRadioButton.setSelected(false);
+
+            }
+        });
+
+        darkRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                lightRadioButton.setSelected(false);
+
+
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (lightRadioButton.isSelected()) setTheme(0); //Set to Light Mode
+                if (darkRadioButton.isSelected()) setTheme(1); //Set to Dark Mode
+                logFile = fileTxt.getText();
+                JOptionPane.showMessageDialog(null, "Settings Saved!");
+
+            }
+        });
+
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lightRadioButton.setSelected(true);
+                darkRadioButton.setSelected(false);
+                fileTxt.setText("Enter File Name");
+                logFile = "";
             }
         });
     }

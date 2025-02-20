@@ -135,6 +135,15 @@
             </constraints>
             <properties>
               <background color="-12415003"/>
+              <model>
+                <item value=""/>
+                <item value="Happy"/>
+                <item value="Sad"/>
+                <item value="Angry"/>
+                <item value="Anxious"/>
+                <item value="Neutral"/>
+                <item value="Nervous"/>
+              </model>
             </properties>
           </component>
           <component id="fc5c8" class="javax.swing.JTextArea" binding="logTxt">
@@ -431,7 +440,7 @@
               <text value="Theme:"/>
             </properties>
           </component>
-          <component id="a244d" class="javax.swing.JTextField" binding="enterFileHereTextField" default-binding="true">
+          <component id="a244d" class="javax.swing.JTextField" binding="fileTxt">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -442,7 +451,7 @@
               <background color="-12415003"/>
               <foreground color="-16777216"/>
               <preferredSize width="250" height="34"/>
-              <text value="&quot;Enter File Here&quot;"/>
+              <text value="Enter File Name"/>
             </properties>
           </component>
           <component id="e3cbc" class="javax.swing.JButton" binding="saveButton" default-binding="true">
