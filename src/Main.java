@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 
 public class Main {
     private JPanel panel1;
@@ -39,20 +40,88 @@ public class Main {
 
     String logFile;
 
-    void setTheme(int x){
-        if (x == 0){
+    void setTheme(int x) {
+        if (x == 0) {
+            // 🌞 Light Mode (Restore Original Colors)
+            basePanel.setBackground(new Color(-13303888)); // Original greenish background
+            logPanel.setBackground(new Color(-13303888));
+            historyPanel.setBackground(new Color(-13303888));
+            settingsPanel.setBackground(new Color(-13303888));
+            CalendarView.setBackground(new Color(-13303888));
+            ListView.setBackground(new Color(-13303888));
 
-            //Keep colors as is (Light Mode)
+            label1.setForeground(new Color(-15978496)); // Original purple text
+            logTxt.setBackground(new Color(-12415003)); // Original blue-ish gray
+            logTxt.setForeground(new Color(-16777216)); // Black text
 
+            fileTxt.setBackground(new Color(-12415003));
+            fileTxt.setForeground(Color.BLACK);
+
+            // Restore JRadioButtons to original colors
+            lightRadioButton.setBackground(new Color(-13303888));
+            lightRadioButton.setForeground(Color.BLACK);
+            darkRadioButton.setBackground(new Color(-13303888));
+            darkRadioButton.setForeground(Color.BLACK);
+
+            // Restore button colors (original mix of blue, green, and gray)
+            updateButtonTheme(new Color(-10799269), new Color(-394241));
         }
 
-        if (x == 1){
+        if (x == 1) {
+            // 🌙 Dark Mode
+            Color backgroundColor = new Color(30, 30, 30);    // Deep dark gray
+            Color panelColor = new Color(40, 40, 40);         // Slightly lighter gray for panels
+            Color textColor = new Color(220, 220, 220);       // Light gray text for contrast
+            Color buttonColor = new Color(60, 60, 60);        // Dark gray buttons
+            Color buttonTextColor = new Color(255, 255, 255); // White text
+            Color inputFieldColor = new Color(50, 50, 50);    // Dark gray text fields
+            Color radioButtonBg = new Color(40, 40, 40);      // Dark gray background for radio buttons
+            Color radioButtonFg = new Color(200, 200, 200);   // Light gray text for radio buttons
 
-            //Make the theme dark
+            basePanel.setBackground(backgroundColor);
+            logPanel.setBackground(backgroundColor);
+            historyPanel.setBackground(backgroundColor);
+            settingsPanel.setBackground(backgroundColor);
+            CalendarView.setBackground(panelColor);
+            ListView.setBackground(panelColor);
 
+            label1.setForeground(textColor);
+            logTxt.setBackground(inputFieldColor);
+            logTxt.setForeground(textColor);
+
+            fileTxt.setBackground(inputFieldColor);
+            fileTxt.setForeground(textColor);
+
+            // Update JRadioButtons for dark mode
+            lightRadioButton.setBackground(radioButtonBg);
+            lightRadioButton.setForeground(radioButtonFg);
+            darkRadioButton.setBackground(radioButtonBg);
+            darkRadioButton.setForeground(radioButtonFg);
+
+            // Update button colors
+            updateButtonTheme(buttonColor, buttonTextColor);
         }
-
     }
+    void updateButtonTheme(Color bgColor, Color fgColor) {
+        JButton[] buttons = {
+                settingsButton, moodHistoryButton, exitButton, logMoodButton,
+                saveLogButton, exitButton1, clearLogButton, refreshTimeButton,
+                backButton, exportHistoryButton, clearHistoryButton,
+                logMoodButton1, logMoodButton2, clearHistoryButton1,
+                exportHistoryButton1, backButton1, saveButton, resetButton, backButton2
+        };
+
+        for (JButton btn : buttons) {
+            btn.setBackground(bgColor);
+            btn.setForeground(fgColor);
+            btn.setFocusPainted(false); // Removes blue focus outline
+            btn.setBorderPainted(false); // Removes border for a modern look
+        }
+    }
+
+
+
+
 
     public Main(){
 
