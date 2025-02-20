@@ -181,5 +181,8 @@ public class Main {
         frame.setSize(650, 600);
         frame.setLocation(400, 200);
         frame.setVisible(true);
+
+
+        //hi my name is nadia
     }
 }
