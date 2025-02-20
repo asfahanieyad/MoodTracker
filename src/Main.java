@@ -173,7 +173,7 @@ public class Main {
         });
     }
 
-
+//hi
     public static void main(String[] args){
         JFrame frame = new JFrame("Mood Tracker");
         frame.setContentPane(new Main().panel1);
