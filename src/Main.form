@@ -34,19 +34,6 @@
               <verticalTextPosition value="0"/>
             </properties>
           </component>
-          <component id="e03b7" class="javax.swing.JButton" binding="moodHistoryButton" default-binding="true">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="10" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
-            </constraints>
-            <properties>
-              <background color="-10799269"/>
-              <focusPainted value="true"/>
-              <foreground color="-394241"/>
-              <preferredSize width="150" height="100"/>
-              <text value="Mood History"/>
-            </properties>
-          </component>
           <component id="4e468" class="javax.swing.JButton" binding="exitButton" default-binding="true">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -66,7 +53,8 @@
             </constraints>
             <properties>
               <background color="-10799269"/>
-              <foreground color="-394241"/>
+              <foreground color="-13958897"/>
+              <hideActionText value="true"/>
               <horizontalTextPosition value="11"/>
               <preferredSize width="150" height="100"/>
               <text value="Log Mood"/>
@@ -82,6 +70,19 @@
               <foreground color="-394241"/>
               <preferredSize width="150" height="100"/>
               <text value="Settings"/>
+            </properties>
+          </component>
+          <component id="e03b7" class="javax.swing.JButton" binding="moodHistoryButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="10" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <background color="-10799269"/>
+              <focusPainted value="true"/>
+              <foreground color="-394241"/>
+              <preferredSize width="150" height="100"/>
+              <text value="Mood History"/>
             </properties>
           </component>
         </children>
