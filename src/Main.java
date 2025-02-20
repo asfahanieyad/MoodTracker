@@ -120,9 +120,6 @@ public class Main {
     }
 
 
-
-
-
     public Main(){
 
         lightRadioButton.setSelected(true);
