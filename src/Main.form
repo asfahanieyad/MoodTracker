@@ -504,7 +504,7 @@
               <text value="Back"/>
             </properties>
           </component>
-          <component id="7f7f3" class="javax.swing.JLabel">
+          <component id="7f7f3" class="javax.swing.JLabel" binding="logFileLabel">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="1.0"/>

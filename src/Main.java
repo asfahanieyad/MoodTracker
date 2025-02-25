@@ -47,6 +47,7 @@ public class Main extends JFrame {
     private DefaultTableModel calendarTableModel;
     private JTable calendarTable;
     private JScrollPane scrollPane;
+    private JLabel logFileLabel;
 
 
     private String logFile = "mood_log.txt"; // Default log file name
@@ -286,7 +287,7 @@ public class Main extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 lightRadioButton.setSelected(true);
                 darkRadioButton.setSelected(false);
-                fileTxt.setText("Enter File Name");
+                fileTxt.setText("mood_log.txt");
                 logFile = "";
             }
         });
