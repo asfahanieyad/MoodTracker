@@ -53,7 +53,7 @@
             </constraints>
             <properties>
               <background color="-10799269"/>
-              <foreground color="-13958897"/>
+              <foreground color="-461569"/>
               <hideActionText value="true"/>
               <horizontalTextPosition value="11"/>
               <preferredSize width="150" height="100"/>
@@ -220,7 +220,7 @@
               <text value="Notes:"/>
             </properties>
           </component>
-          <component id="f28ef" class="javax.swing.JLabel">
+          <component id="f28ef" class="javax.swing.JLabel" binding="timeLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
@@ -256,6 +256,7 @@
                 </constraints>
                 <properties>
                   <background color="-13303888"/>
+                  <foreground color="-13303888"/>
                 </properties>
                 <border type="none"/>
                 <children>
@@ -271,11 +272,6 @@
                       <text value="Back"/>
                     </properties>
                   </component>
-                  <vspacer id="2abcd">
-                    <constraints>
-                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
                   <component id="87e53" class="javax.swing.JButton" binding="exportHistoryButton" default-binding="true">
                     <constraints>
                       <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
@@ -312,6 +308,27 @@
                       <text value="Log Mood"/>
                     </properties>
                   </component>
+                  <scrollpane id="94373" binding="scrollPane">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-13303888"/>
+                      <foreground color="-13303888"/>
+                    </properties>
+                    <border type="none">
+                      <title-color color="-13303888"/>
+                    </border>
+                    <children>
+                      <component id="e80bd" class="javax.swing.JTable" binding="calendarTable">
+                        <constraints/>
+                        <properties>
+                          <background color="-13303888"/>
+                          <foreground color="-16250872"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
                 </children>
               </grid>
               <grid id="fc9b6" binding="ListView" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -324,17 +341,6 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <scrollpane id="f3519">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <background color="-13303888"/>
-                      <foreground color="-13303888"/>
-                    </properties>
-                    <border type="none"/>
-                    <children/>
-                  </scrollpane>
                   <component id="e36d3" class="javax.swing.JButton" binding="logMoodButton2" default-binding="true">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -343,6 +349,16 @@
                       <background color="-12415003"/>
                       <foreground color="-16777216"/>
                       <text value="Log Mood"/>
+                    </properties>
+                  </component>
+                  <component id="8fb6a" class="javax.swing.JTextArea" binding="listViewTextArea">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <background color="-13303888"/>
                     </properties>
                   </component>
                   <component id="a86cd" class="javax.swing.JButton" binding="clearHistoryButton1" default-binding="true">

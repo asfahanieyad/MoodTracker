@@ -2,8 +2,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
 
-public class Main {
+public class Main extends JFrame {
     private JPanel panel1;
     private JPanel basePanel;
     private JPanel logPanel;
@@ -37,9 +42,19 @@ public class Main {
     private JButton saveButton;
     private JButton resetButton;
     private JButton backButton2;
+    private JLabel timeLabel;
+    private JTextArea listViewTextArea;
+    private DefaultTableModel calendarTableModel;
+    private JTable calendarTable;
+    private JScrollPane scrollPane;
 
-    String logFile;
 
+    private String logFile = "mood_log.txt"; // Default log file name
+
+    private void updateDisplayedTime() {
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        timeLabel.setText("Current Time: " + timeStamp);
+    }
     void setTheme(int x) {
         if (x == 0) {
             // 🌞 Light Mode (Restore Original Colors)
@@ -49,6 +64,9 @@ public class Main {
             settingsPanel.setBackground(new Color(-13303888));
             CalendarView.setBackground(new Color(-13303888));
             ListView.setBackground(new Color(-13303888));
+            calendarTable.setBackground(new Color(-13303888));
+            listViewTextArea.setBackground(new Color(-13303888));
+            scrollPane.setForeground(new Color(-13303888));
 
             label1.setForeground(new Color(-15978496)); // Original purple text
             logTxt.setBackground(new Color(-12415003)); // Original blue-ish gray
@@ -84,6 +102,13 @@ public class Main {
             settingsPanel.setBackground(backgroundColor);
             CalendarView.setBackground(panelColor);
             ListView.setBackground(panelColor);
+            calendarTable.setBackground(panelColor);
+            listViewTextArea.setBackground(panelColor);
+
+            calendarTable.setForeground(textColor);
+            listViewTextArea.setForeground(textColor);
+            scrollPane.setForeground(panelColor);
+
 
             label1.setForeground(textColor);
             logTxt.setBackground(inputFieldColor);
@@ -118,11 +143,38 @@ public class Main {
             btn.setBorderPainted(false); // Removes border for a modern look
         }
     }
+    private void loadMoodHistory() {
+        File file = new File(logFile);
+        if (!file.exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                listViewTextArea.append(line + "\n");
+                if (line.contains(" - Mood: ")) {
+                    String[] parts = line.split(" - Mood: ");
+                    if (parts.length == 2) {
+                        calendarTableModel.addRow(new Object[]{parts[0], parts[1]});
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
+        }
+    }
 
 
     public Main(){
 
         lightRadioButton.setSelected(true);
+        listViewTextArea.setEditable(false);
+        String[] columnNames = {"Date", "Mood"};
+        calendarTableModel = new DefaultTableModel(columnNames, 0);
+        calendarTable.setModel(calendarTableModel);
+
+        updateDisplayedTime();
+        loadMoodHistory();
+
 
         logMoodButton.addActionListener(new ActionListener() {
             @Override
@@ -191,6 +243,7 @@ public class Main {
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                fileTxt.setText(logFile);
                 settingsPanel.setVisible(true);
                 basePanel.setVisible(false);
             }
@@ -237,6 +290,98 @@ public class Main {
                 logFile = "";
             }
         });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        saveLogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try (FileWriter writer = new FileWriter(logFile, true)) {
+                    String mood = (String) comboBox1.getSelectedItem();
+                    String notes = logTxt.getText().trim();
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+                    if (mood == null || mood.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please select a mood.");
+                        return;
+                    }
+
+                    String logEntry = timeStamp + " - Mood: " + mood + "\nNotes: " + notes + "\n\n";
+                    writer.write(logEntry);
+
+                    listViewTextArea.append(logEntry + "\n");
+                    calendarTableModel.addRow(new Object[]{timeStamp, mood});
+
+                    JOptionPane.showMessageDialog(null, "Mood logged successfully!");
+                    logTxt.setText(""); // Clear after saving
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error saving log: " + ex.getMessage());
+                }
+            }
+        });
+
+        clearLogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logTxt.setText("");
+            }
+        });
+
+
+        refreshTimeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateDisplayedTime();
+            }
+        });
+        exportHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = new File(logFile);
+                if (!file.exists()) {
+                    JOptionPane.showMessageDialog(null, "No history found to export.");
+                    return;
+                }
+                JOptionPane.showMessageDialog(null, "Mood history exported to: " + file.getAbsolutePath());
+            }
+        });
+        clearHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = new File(logFile);
+                if (file.exists() && file.delete()) {
+
+                    calendarTableModel.setRowCount(0);
+                    listViewTextArea.setText("");
+
+                    JOptionPane.showMessageDialog(null, "Mood history cleared.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No history to clear.");
+                }
+            }
+        });
+
+        clearHistoryButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = new File(logFile);
+                if (file.exists() && file.delete()) {
+
+                    calendarTableModel.setRowCount(0);
+                    listViewTextArea.setText("");
+
+                    JOptionPane.showMessageDialog(null, "Mood history cleared.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No history to clear.");
+                }
+            }
+        });
+
     }
 
     public static void main(String[] args){
