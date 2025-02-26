@@ -399,6 +399,15 @@ public class Main extends JFrame {
             }
         });
 
+        logTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if(logTxt.getText().equals("Enter Text Here")) {
+                    logTxt.setText("");
+                }
+            }
+        });
+
         clearLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
