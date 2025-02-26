@@ -52,6 +52,27 @@ public class Main extends JFrame {
 
     private String logFile = "mood_log.txt"; // Default log file name
 
+//UPDATE
+// Convert mood to emoji on calendar view with getMoodEmoji
+private String getMoodEmoji(String mood) {
+    switch (mood.toLowerCase()) {
+        case "happy":
+            return "😊";
+        case "sad":
+            return "😢";
+        case "angry":
+            return "😡";
+        case "anxious":
+            return "😟";
+        case "neutral":
+            return "😐";
+        case "nervous":
+            return "😬";
+        default:
+            return "😐"; // Default neutral emoji
+    }
+}
+
     private void updateDisplayedTime() {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         timeLabel.setText("Current Time: " + timeStamp);
@@ -144,7 +165,10 @@ public class Main extends JFrame {
             btn.setBorderPainted(false); // Removes border for a modern look
         }
     }
-    private void loadMoodHistory() {
+
+//UPDATE
+// Load mood history with emojis based on emotion selected on calendar
+/*  private void loadMoodHistory() {
         File file = new File(logFile);
         if (!file.exists()) return;
 
@@ -163,7 +187,29 @@ public class Main extends JFrame {
             JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
         }
     }
+*/
+    private void loadMoodHistory() {
+        File file = new File(logFile);
+        if (!file.exists()) return;
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(" - Mood: ")) {
+                    String[] parts = line.split(" - Mood: ");
+                    if (parts.length == 2) {
+                        String date = parts[0];
+                        String mood = parts[1].split("\n")[0];  // This now contains the emoji or mood
+                        String notes = line.contains("Notes: ") ? line.split("Notes: ")[1].trim() : "";
+                        String displayText = mood + (notes.isEmpty() ? "" : " (" + notes + ")");
+                        calendarTableModel.addRow(new Object[]{date, displayText});
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
+        }
+    }
 
     public Main(){
 
@@ -311,8 +357,27 @@ public class Main extends JFrame {
                         JOptionPane.showMessageDialog(null, "Please select a mood.");
                         return;
                     }
+//UPDATE
+//Emoji for the selected mood
+                    String emoji = getMoodEmoji(mood);
+                    String logEntry = timeStamp + " - Mood: " + emoji + "\nNotes: " + notes + "\n\n";
+                    writer.write(logEntry);
 
+                    listViewTextArea.append(logEntry + "\n");
+                    calendarTableModel.addRow(new Object[]{timeStamp, emoji + (notes.isEmpty() ? "" : " (" + notes + ")")});
+
+                    JOptionPane.showMessageDialog(null, "Mood logged successfully!");
+
+                    logTxt.setText("");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error saving log: " + ex.getMessage());
+                }
+            }
+        });
+
+/*
                     String logEntry = timeStamp + " - Mood: " + mood + "\nNotes: " + notes + "\n\n";
+
                     writer.write(logEntry);
 
                     listViewTextArea.append(logEntry + "\n");
@@ -325,7 +390,7 @@ public class Main extends JFrame {
                 }
             }
         });
-
+*/
         clearLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
