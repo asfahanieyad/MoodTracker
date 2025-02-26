@@ -53,7 +53,7 @@ public class Main extends JFrame {
     private JTable calendarTable;
     private JScrollPane scrollPane;
     private JLabel logFileLabel;
-    private Map<String, String> moodLogs = new HashMap<>(); // Store logs by date
+    private Map<String, String> moodLogs = new HashMap<>();
     private String logFile = "mood_log.txt"; // Default log file name
 
     private JLabel getMoodIcon(String mood, String date) {
@@ -70,11 +70,11 @@ public class Main extends JFrame {
         JLabel label = new JLabel(new ImageIcon(imagePath));
         label.setToolTipText(date);
         return label;
-    }
+    } //Function to convert mood selection to corresponding image
     private void updateDisplayedTime() {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         timeLabel.setText("Current Time: " + timeStamp);
-    }
+    } //function to update the date and time
     void setTheme(int x) {
         if (x == 0) {
             //Light Mode
@@ -134,7 +134,7 @@ public class Main extends JFrame {
             darkRadioButton.setForeground(radioButtonFg);
             updateButtonTheme(buttonColor, buttonTextColor);
         }
-    }
+    } //function to change the colors of program
     void updateButtonTheme(Color bgColor, Color fgColor) {
         JButton[] buttons = {
                 settingsButton, moodHistoryButton, exitButton, logMoodButton,
@@ -150,7 +150,7 @@ public class Main extends JFrame {
             btn.setFocusPainted(false); // Removes blue focus outline
             btn.setBorderPainted(false); // Removes border for a modern look
         }
-    }
+    } //also changes the colors of the program
     private void updateCalendar(String date, String mood) {
         try {
             Date logDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -168,7 +168,7 @@ public class Main extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    } //function to update calendar with new logs
     private void loadMoodHistory() {
         File file = new File(logFile);
         if (!file.exists()) return;
@@ -202,7 +202,7 @@ public class Main extends JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
         }
-    }
+    } // function to load history when program starts
     private void updateListView() {
         listViewTextArea.setText(""); // Clear previous text
         StringBuilder historyText = new StringBuilder();
@@ -217,9 +217,7 @@ public class Main extends JFrame {
         }
 
         listViewTextArea.setText(historyText.toString());
-    }
-
-
+    } //function to update the list view of mood history
 
     public Main() {
 
@@ -227,12 +225,12 @@ public class Main extends JFrame {
         listViewTextArea.setVisible(true);
         listViewTextArea.setEditable(false);
 
-        // **Updated: Set up Calendar Table as a 7-day week format (Sunday-Saturday)**
+        //Set up Calendar Table as a 7-day format
         String[] columnNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        calendarTableModel = new DefaultTableModel(columnNames, 6); // 6 rows for weeks
+        calendarTableModel = new DefaultTableModel(columnNames, 6);
         calendarTable.setModel(calendarTableModel);
-        calendarTable.setRowHeight(60); // Make rows bigger to fit emoji icons
-        calendarTable.setCellSelectionEnabled(true); // Enable selection
+        calendarTable.setRowHeight(60);
+        calendarTable.setCellSelectionEnabled(true);
         calendarTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -245,14 +243,13 @@ public class Main extends JFrame {
             }
         });
 
-
-
-
+    //Initialize Time and History
         updateDisplayedTime();
         loadMoodHistory();
         updateListView();
 
 
+        //Action listeners for all buttons
         logMoodButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -358,7 +355,6 @@ public class Main extends JFrame {
             }
         });
 
-
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -403,7 +399,6 @@ public class Main extends JFrame {
             }
         });
 
-
         clearLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -412,13 +407,13 @@ public class Main extends JFrame {
             }
         });
 
-
         refreshTimeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateDisplayedTime();
             }
         });
+
         exportHistoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -452,8 +447,6 @@ public class Main extends JFrame {
             }
         });
 
-
-
         clearHistoryButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -475,17 +468,16 @@ public class Main extends JFrame {
             }
         });
 
-
-
         calendarTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int row = calendarTable.getSelectedRow();
                 int col = calendarTable.getSelectedColumn();
                 Object value = calendarTableModel.getValueAt(row, col);
 
+                //Show notes when emoji is clicked
                 if (value instanceof JLabel) {
                     JLabel label = (JLabel) value;
-                    String date = label.getToolTipText(); // Tooltip stores date
+                    String date = label.getToolTipText();
                     if (moodLogs.containsKey(date)) {
                         JOptionPane.showMessageDialog(null, "Date: " + date + "\n" + moodLogs.get(date),
                                 "Mood Details", JOptionPane.INFORMATION_MESSAGE);
@@ -495,14 +487,15 @@ public class Main extends JFrame {
         });
 
     }
+
     public static void main (String[]args){
+
+        //Set up frame
         JFrame frame = new JFrame("Mood Tracker");
         frame.setContentPane(new Main().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(650, 600);
         frame.setLocation(400, 200);
         frame.setVisible(true);
-
-
     }
 }
