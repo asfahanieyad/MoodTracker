@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
@@ -44,43 +48,38 @@ public class Main extends JFrame {
     private JButton backButton2;
     private JLabel timeLabel;
     private JTextArea listViewTextArea;
-    private DefaultTableModel calendarTableModel;
+    private final DefaultTableModel calendarTableModel;
     private JTable calendarTable;
     private JScrollPane scrollPane;
     private JLabel logFileLabel;
-
-
+    private Map<String, String> moodLogs = new HashMap<>(); // Store logs by date
     private String logFile = "mood_log.txt"; // Default log file name
 
 //UPDATE
-// Convert mood to emoji on calendar view with getMoodEmoji
-private String getMoodEmoji(String mood) {
+private JLabel getMoodIcon(String mood, String date) {
+    String imagePath = "";
     switch (mood.toLowerCase()) {
-        case "happy":
-            return "😊";
-        case "sad":
-            return "😢";
-        case "angry":
-            return "😡";
-        case "anxious":
-            return "😟";
-        case "neutral":
-            return "😐";
-        case "nervous":
-            return "😬";
-        default:
-            return "😐"; // Default neutral emoji
+        case "happy": imagePath = "happy.png"; break;
+        case "sad": imagePath = "sad.png"; break;
+        case "angry": imagePath = "angry.png"; break;
+        case "anxious": imagePath = "anxious.png"; break;
+        case "neutral": imagePath = "neutral.png"; break;
+        case "nervous": imagePath = "nervous.png"; break;
+        default: imagePath = "neutral.png"; // Default image
     }
-}
 
-    private void updateDisplayedTime() {
+    JLabel label = new JLabel(new ImageIcon(imagePath));
+    label.setToolTipText(date); // Store date in tooltip
+    return label;
+}
+private void updateDisplayedTime() {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         timeLabel.setText("Current Time: " + timeStamp);
     }
     void setTheme(int x) {
         if (x == 0) {
-            // 🌞 Light Mode (Restore Original Colors)
-            basePanel.setBackground(new Color(-13303888)); // Original greenish background
+            //Light Mode
+            basePanel.setBackground(new Color(-13303888)); //green background
             logPanel.setBackground(new Color(-13303888));
             historyPanel.setBackground(new Color(-13303888));
             settingsPanel.setBackground(new Color(-13303888));
@@ -89,11 +88,9 @@ private String getMoodEmoji(String mood) {
             calendarTable.setBackground(new Color(-13303888));
             listViewTextArea.setBackground(new Color(-13303888));
             scrollPane.setForeground(new Color(-13303888));
-
-            label1.setForeground(new Color(-15978496)); // Original purple text
-            logTxt.setBackground(new Color(-12415003)); // Original blue-ish gray
-            logTxt.setForeground(new Color(-16777216)); // Black text
-
+            label1.setForeground(new Color(-15978496)); // purple
+            logTxt.setBackground(new Color(-12415003)); // blue-ish gray
+            logTxt.setForeground(new Color(-16777216)); // Black
             fileTxt.setBackground(new Color(-12415003));
             fileTxt.setForeground(Color.BLACK);
 
@@ -102,13 +99,11 @@ private String getMoodEmoji(String mood) {
             lightRadioButton.setForeground(Color.BLACK);
             darkRadioButton.setBackground(new Color(-13303888));
             darkRadioButton.setForeground(Color.BLACK);
-
-            // Restore button colors (original mix of blue, green, and gray)
             updateButtonTheme(new Color(-10799269), new Color(-394241));
         }
 
         if (x == 1) {
-            // 🌙 Dark Mode
+            // Dark Mode
             Color backgroundColor = new Color(30, 30, 30);    // Deep dark gray
             Color panelColor = new Color(40, 40, 40);         // Slightly lighter gray for panels
             Color textColor = new Color(220, 220, 220);       // Light gray text for contrast
@@ -126,26 +121,18 @@ private String getMoodEmoji(String mood) {
             ListView.setBackground(panelColor);
             calendarTable.setBackground(panelColor);
             listViewTextArea.setBackground(panelColor);
-
             calendarTable.setForeground(textColor);
             listViewTextArea.setForeground(textColor);
             scrollPane.setForeground(panelColor);
-
-
             label1.setForeground(textColor);
             logTxt.setBackground(inputFieldColor);
             logTxt.setForeground(textColor);
-
             fileTxt.setBackground(inputFieldColor);
             fileTxt.setForeground(textColor);
-
-            // Update JRadioButtons for dark mode
             lightRadioButton.setBackground(radioButtonBg);
             lightRadioButton.setForeground(radioButtonFg);
             darkRadioButton.setBackground(radioButtonBg);
             darkRadioButton.setForeground(radioButtonFg);
-
-            // Update button colors
             updateButtonTheme(buttonColor, buttonTextColor);
         }
     }
@@ -166,8 +153,25 @@ private String getMoodEmoji(String mood) {
         }
     }
 
-//UPDATE
-// Load mood history with emojis based on emotion selected on calendar
+    private void updateCalendar(String date, String mood) {
+        try {
+            Date logDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            calendar.setTime(logDate);
+
+            int day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
+            calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
+            int startDay = calendar.get(java.util.Calendar.DAY_OF_WEEK) - 1;
+
+            int row = (day + startDay - 1) / 7;
+            int col = (day + startDay - 1) % 7;
+
+            calendarTableModel.setValueAt(getMoodIcon(mood, date), row, col);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 private void loadMoodHistory() {
     File file = new File(logFile);
     if (!file.exists()) return;
@@ -175,16 +179,15 @@ private void loadMoodHistory() {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
         String line;
         while ((line = reader.readLine()) != null) {
-            System.out.println("Reading line: " + line);
-
             if (line.contains(" - Mood: ")) {
                 String[] parts = line.split(" - Mood: ");
                 if (parts.length == 2) {
                     String date = parts[0];
-                    String mood = parts[1].split("\n")[0];  // This should contain the emoji
-                    String notes = line.contains("Notes: ") ? line.split("Notes: ")[1].trim() : "";
-                    String displayText = mood + (notes.isEmpty() ? "" : " (" + notes + ")");
-                    calendarTableModel.addRow(new Object[]{date, displayText});
+                    String mood = parts[1].split("\n")[0].replace("Mood: ", "").trim();
+                    String notes = (parts[1].contains("Notes: ")) ? parts[1].split("Notes: ")[1].trim() : "None";
+
+                    moodLogs.put(date, "Mood: " + mood + "\nNotes: " + notes);
+                    updateCalendar(date, mood);
                 }
             }
         }
@@ -192,38 +195,41 @@ private void loadMoodHistory() {
         JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
     }
 }
+    private void updateListView() {
+        listViewTextArea.setText(""); // Clear previous text
+        StringBuilder historyText = new StringBuilder();
 
-/*  private void loadMoodHistory() {
-        File file = new File(logFile);
-        if (!file.exists()) return;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                listViewTextArea.append(line + "\n");
-                if (line.contains(" - Mood: ")) {
-                    String[] parts = line.split(" - Mood: ");
-                    if (parts.length == 2) {
-                        calendarTableModel.addRow(new Object[]{parts[0], parts[1]});
-                    }
-                }
-            }
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error loading history: " + ex.getMessage());
+        for (Map.Entry<String, String> entry : moodLogs.entrySet()) {
+            historyText.append("Date: ").append(entry.getKey()).append("\n")
+                    .append(entry.getValue()).append("\n\n");
         }
-    }
-*/
 
-    public Main(){
+        if (historyText.length() == 0) {
+            historyText.append("No mood history available.");
+        }
+
+        listViewTextArea.setText(historyText.toString());
+    }
+
+
+
+    public Main() {
 
         lightRadioButton.setSelected(true);
+        listViewTextArea.setVisible(true);
         listViewTextArea.setEditable(false);
-        String[] columnNames = {"Date", "Mood"};
-        calendarTableModel = new DefaultTableModel(columnNames, 0);
+
+        // **Updated: Set up Calendar Table as a 7-day week format (Sunday-Saturday)**
+        String[] columnNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        calendarTableModel = new DefaultTableModel(columnNames, 6); // 6 rows for weeks
         calendarTable.setModel(calendarTableModel);
+        calendarTable.setRowHeight(60); // Make rows bigger to fit emoji icons
+        calendarTable.setCellSelectionEnabled(true); // Enable selection
+
 
         updateDisplayedTime();
         loadMoodHistory();
+        updateListView();
 
 
         logMoodButton.addActionListener(new ActionListener() {
@@ -247,6 +253,7 @@ private void loadMoodHistory() {
             public void actionPerformed(ActionEvent e) {
                 basePanel.setVisible(false);
                 historyPanel.setVisible(true);
+                updateListView();
             }
         });
 
@@ -348,42 +355,7 @@ private void loadMoodHistory() {
             }
         });
 
-//UPDATE
-//Emoji for the selected mood
         saveLogButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try (FileWriter writer = new FileWriter(logFile, true)) {
-                String mood = (String) comboBox1.getSelectedItem();
-                String notes = logTxt.getText().trim();  // Get and trim the notes
-                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-                if (mood == null || mood.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please select a mood.");
-                    return;
-                }
-
-                String emoji = getMoodEmoji(mood);
-                if (notes.equals("Enter Text Here")) {
-                    notes = "";
-                }
-
-                String logEntry = timeStamp + " - Mood: " + emoji + "\nNotes: " + (notes.isEmpty() ? "" : notes) + "\n\n";
-                writer.write(logEntry);
-
-                listViewTextArea.append(logEntry + "\n");
-                calendarTableModel.addRow(new Object[]{timeStamp, emoji + (notes.isEmpty() ? "" : " (" + notes + ")")});
-
-                JOptionPane.showMessageDialog(null, "Mood logged successfully!");
-
-                logTxt.setText("");
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Error saving log: " + ex.getMessage());
-            }
-        }
-    });
-
- /*       saveLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try (FileWriter writer = new FileWriter(logFile, true)) {
@@ -396,12 +368,14 @@ private void loadMoodHistory() {
                         return;
                     }
 
-                    String logEntry = timeStamp + " - Mood: " + mood + "\nNotes: " + notes + "\n\n";
+                    String logEntry = "Mood: " + mood + "\nNotes: " + (notes.isEmpty() ? "None" : notes);
+                    writer.write(timeStamp + " - " + logEntry + "\n\n");
 
-                    writer.write(logEntry);
+                    // Always update the mood for this date in the HashMap (replaces old entry)
+                    moodLogs.put(timeStamp, logEntry);
 
-                    listViewTextArea.append(logEntry + "\n");
-                    calendarTableModel.addRow(new Object[]{timeStamp, mood});
+                    // Update calendar with the latest mood for this day
+                    updateCalendar(timeStamp.split(" ")[0], mood);
 
                     JOptionPane.showMessageDialog(null, "Mood logged successfully!");
                     logTxt.setText(""); // Clear after saving
@@ -410,11 +384,14 @@ private void loadMoodHistory() {
                 }
             }
         });
-*/
+
+
+
         clearLogButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 logTxt.setText("");
+                comboBox1.setSelectedIndex(0);
             }
         });
 
@@ -468,16 +445,32 @@ private void loadMoodHistory() {
             }
         });
 
+        calendarTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = calendarTable.getSelectedRow();
+                int col = calendarTable.getSelectedColumn();
+                Object value = calendarTableModel.getValueAt(row, col);
+
+                if (value instanceof JLabel) {
+                    JLabel label = (JLabel) value;
+                    String date = label.getToolTipText(); // Tooltip stores date
+                    if (moodLogs.containsKey(date)) {
+                        JOptionPane.showMessageDialog(null, "Date: " + date + "\n" + moodLogs.get(date),
+                                "Mood Details", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        });
+
     }
+        public static void main (String[]args){
+            JFrame frame = new JFrame("Mood Tracker");
+            frame.setContentPane(new Main().panel1);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(650, 600);
+            frame.setLocation(400, 200);
+            frame.setVisible(true);
 
-    public static void main(String[] args){
-        JFrame frame = new JFrame("Mood Tracker");
-        frame.setContentPane(new Main().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(650, 600);
-        frame.setLocation(400, 200);
-        frame.setVisible(true);
 
-
+        }
     }
-}
