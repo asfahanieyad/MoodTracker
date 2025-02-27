@@ -53,6 +53,7 @@ public class Main extends JFrame {
     private JTable calendarTable;
     private JScrollPane scrollPane;
     private JLabel logFileLabel;
+    private JScrollPane scrollPane2;
     private Map<String, String> moodLogs = new HashMap<>();
     private String logFile = "mood_log.txt"; // Default log file name
 

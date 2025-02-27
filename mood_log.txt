@@ -1,3 +1,6 @@
+2025-02-16 11:15:21 - Mood: Sad
+Notes: pain
+
 2025-02-18 11:15:21 - Mood: Sad
 Notes: I am depressed
 
@@ -21,4 +24,7 @@ Notes: i feel great
 
 2025-02-27 14:15:03 - Mood: Happy
 Notes: i am happy today
+
+2025-02-27 14:44:23 - Mood: Nervous
+Notes: i am nervous for my exam
 
