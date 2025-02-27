@@ -179,22 +179,33 @@ public class Main extends JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                // Skip blank lines
+                if (line.trim().isEmpty()) continue;
+
+                // Process the line containing the timestamp and mood
                 if (line.contains(" - Mood: ")) {
-                    String[] parts = line.split(" - Mood: ");
+                    String logLine = line;
+                    // Read the next non-empty line which should contain the notes
+                    String notesLine = reader.readLine();
+                    while (notesLine != null && notesLine.trim().isEmpty()) {
+                        notesLine = reader.readLine();
+                    }
+
+                    String[] parts = logLine.split(" - Mood: ");
                     if (parts.length == 2) {
                         String fullTimestamp = parts[0];
                         // Extract only the date portion (yyyy-MM-dd)
                         String date = fullTimestamp.split(" ")[0];
-                        String mood = parts[1].split("\n")[0].replace("Mood: ", "").trim();
-                        String notes = (parts[1].contains("Notes: "))
-                                ? parts[1].split("Notes: ")[1].trim()
-                                : "None";
+                        String mood = parts[1].replace("Mood: ", "").trim();
+                        String notes = "None";
+                        if (notesLine != null && notesLine.contains("Notes: ")) {
+                            notes = notesLine.split("Notes: ")[1].trim();
+                        }
                         String logEntry = "Mood: " + mood + "\nNotes: " + notes;
 
                         // Merge logs if multiple entries exist for the same date
                         moodLogs.merge(date, logEntry, (existing, newEntry) -> existing + "\n---\n" + newEntry);
-
-                        // Always update the calendar with the latest mood for that date
+                        // Update the calendar with the latest mood for that date
                         updateCalendar(date, mood);
                     }
                 }
