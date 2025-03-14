@@ -54,6 +54,13 @@ public class Main extends JFrame {
     private JScrollPane scrollPane;
     private JLabel logFileLabel;
     private JScrollPane scrollPane2;
+    private JPanel examPanel;
+    private JButton openWindow;
+    private JButton addNewWindowButton;
+    private JButton viewWindowButton;
+    private JButton profileHistoryButton;
+    private JButton logoutButton;
+    private JLabel examLabel;
     private Map<String, String> moodLogs = new HashMap<>();
     private String logFile = "mood_log.txt"; // Default log file name
 
@@ -507,6 +514,69 @@ public class Main extends JFrame {
             }
         });
 
+        openWindow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                historyPanel.setVisible(false);
+                logPanel.setVisible(false);
+                settingsPanel.setVisible(false);
+                basePanel.setVisible(false);
+
+                examPanel.setVisible(true);
+
+            }
+        });
+
+        addNewWindowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Window2().setVisible(true);
+            }
+        });
+        viewWindowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame window3 = new JFrame("Window 3 - View Window");
+                window3.setSize(400, 200);
+                window3.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                window3.setLayout(new FlowLayout());
+
+                JComboBox<String> comboBoxWindows = new JComboBox<>(new String[]{"Window 1", "Window 2", "Profile History"});
+                JButton openWindowButton = new JButton("Open Selected Window");
+
+                window3.add(comboBoxWindows);
+                window3.add(openWindowButton);
+
+                openWindowButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String selectedWindow = (String) comboBoxWindows.getSelectedItem();
+                        if (selectedWindow.equals("Window 1")) {
+                            new Window1().setVisible(true);
+                        } else if (selectedWindow.equals("Window 2")) {
+                            new Window2().setVisible(true);
+                        } else if (selectedWindow.equals("Profile History")) {
+                            new ProfileHistory().setVisible(true);
+                        }
+                    }
+                });
+
+                window3.setLocationRelativeTo(null);
+                window3.setVisible(true);
+            }
+        });
+        profileHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ProfileHistory().setVisible(true);
+            }
+        });
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     public static void main (String[]args){
@@ -518,5 +588,146 @@ public class Main extends JFrame {
         frame.setSize(650, 600);
         frame.setLocation(400, 200);
         frame.setVisible(true);
+
+
+
+    }
+}
+
+class Window1 extends JFrame {
+    public Window1() {
+        setTitle("Window 1");
+        setSize(400, 250);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JLabel label = new JLabel("This is Window 1", SwingConstants.CENTER);
+        add(label);
+
+        setVisible(true);
+    }
+}
+
+class Window2 extends JFrame {
+    public Window2() {
+        setTitle("Window 2");
+        setSize(400, 250);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JLabel label = new JLabel("This is Window 2", SwingConstants.CENTER);
+        add(label);
+
+        setVisible(true);
+    }
+}
+
+class ProfileHistory extends JFrame {
+    private JPanel formPanel, tablePanel;
+    private JTextField designerNameField, dateField, emailField, contactField, versionField;
+    private DefaultTableModel tableModel;
+    private CardLayout cardLayout;
+
+    public ProfileHistory() {
+        setTitle("Profile History");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Use CardLayout to switch between panels
+        cardLayout = new CardLayout();
+        JPanel mainPanel = new JPanel(cardLayout);
+
+        // ========== Panel 1: Project Details Form ==========
+        formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(6, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createTitledBorder("PROJECT DETAILS"));
+
+        // Add Labels and Fields
+        formPanel.add(new JLabel("Designer Name:"));
+        designerNameField = new JTextField();
+        formPanel.add(designerNameField);
+
+        formPanel.add(new JLabel("Date (YYYY-MM-DD):"));
+        dateField = new JTextField();
+        formPanel.add(dateField);
+
+        formPanel.add(new JLabel("Contact Email Address:"));
+        emailField = new JTextField();
+        formPanel.add(emailField);
+
+        formPanel.add(new JLabel("Contact Number:"));
+        contactField = new JTextField();
+        formPanel.add(contactField);
+
+        formPanel.add(new JLabel("Version Number:"));
+        versionField = new JTextField();
+        formPanel.add(versionField);
+
+        // Buttons Panel
+        JPanel buttonPanel = new JPanel();
+        JButton addButton = new JButton("Add to Profile");
+        buttonPanel.add(addButton);
+
+        formPanel.add(buttonPanel);
+
+        // ========== Panel 2: Table View ==========
+        tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createTitledBorder("Profile Table"));
+
+        String[] columnNames = {"Names", "Date", "Email", "Contact No", "Version"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        JTable table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        JButton backButton = new JButton("Back");
+        JPanel tableButtonPanel = new JPanel();
+        tableButtonPanel.add(backButton);
+
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        tablePanel.add(tableButtonPanel, BorderLayout.SOUTH);
+
+        // ========== Add Panels to CardLayout ==========
+        mainPanel.add(formPanel, "FormPanel");
+        mainPanel.add(tablePanel, "TablePanel");
+
+        // Add the main panel to the JFrame
+        add(mainPanel);
+
+        // ========== Button Actions ==========
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get data from fields
+                String name = designerNameField.getText();
+                String date = dateField.getText();
+                String email = emailField.getText();
+                String contact = contactField.getText();
+                String version = versionField.getText();
+
+                // Add to table
+                tableModel.addRow(new Object[]{name, date, email, contact, version});
+
+                // Clear input fields
+                designerNameField.setText("");
+                dateField.setText("");
+                emailField.setText("");
+                contactField.setText("");
+                versionField.setText("");
+
+                // Show Table Panel
+                cardLayout.show(mainPanel, "TablePanel");
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show Form Panel again
+                cardLayout.show(mainPanel, "FormPanel");
+            }
+        });
+
+        setVisible(true);
     }
 }
