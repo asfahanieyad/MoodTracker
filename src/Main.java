@@ -56,9 +56,9 @@ public class Main extends JFrame {
     private JScrollPane scrollPane2;
     private JPanel examPanel;
     private JButton openWindow;
-    private JButton addNewWindowButton;
-    private JButton viewWindowButton;
-    private JButton profileHistoryButton;
+    private JButton Window2;
+    private JButton Window3;
+    private JButton Window4;
     private JButton logoutButton;
     private JLabel examLabel;
     private Map<String, String> moodLogs = new HashMap<>();
@@ -514,6 +514,7 @@ public class Main extends JFrame {
             }
         });
 
+//EXAM
         openWindow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -527,48 +528,24 @@ public class Main extends JFrame {
             }
         });
 
-        addNewWindowButton.addActionListener(new ActionListener() {
+        Window2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Window2().setVisible(true);
             }
         });
-        viewWindowButton.addActionListener(new ActionListener() {
+
+        Window3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame window3 = new JFrame("Window 3 - View Window");
-                window3.setSize(400, 200);
-                window3.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                window3.setLayout(new FlowLayout());
-
-                JComboBox<String> comboBoxWindows = new JComboBox<>(new String[]{"Window 1", "Window 2", "Profile History"});
-                JButton openWindowButton = new JButton("Open Selected Window");
-
-                window3.add(comboBoxWindows);
-                window3.add(openWindowButton);
-
-                openWindowButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String selectedWindow = (String) comboBoxWindows.getSelectedItem();
-                        if (selectedWindow.equals("Window 1")) {
-                            new Window1().setVisible(true);
-                        } else if (selectedWindow.equals("Window 2")) {
-                            new Window2().setVisible(true);
-                        } else if (selectedWindow.equals("Profile History")) {
-                            new ProfileHistory().setVisible(true);
-                        }
-                    }
-                });
-
-                window3.setLocationRelativeTo(null);
-                window3.setVisible(true);
+                new Window3().setVisible(true); // Clean, simple call to Window3
             }
         });
-        profileHistoryButton.addActionListener(new ActionListener() {
+
+        Window4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ProfileHistory().setVisible(true);
+                new Window4().setVisible(true);
             }
         });
         logoutButton.addActionListener(new ActionListener() {
@@ -581,7 +558,6 @@ public class Main extends JFrame {
 
     public static void main (String[]args){
 
-        //Set up frame
         JFrame frame = new JFrame("Mood Tracker");
         frame.setContentPane(new Main().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -594,6 +570,8 @@ public class Main extends JFrame {
     }
 }
 
+
+//Window 1
 class Window1 extends JFrame {
     public Window1() {
         setTitle("Window 1");
@@ -608,122 +586,187 @@ class Window1 extends JFrame {
     }
 }
 
+//Window 2
 class Window2 extends JFrame {
     public Window2() {
-        setTitle("Window 2");
+        setTitle("New Window");
         setSize(400, 250);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Only closes this window
         setLocationRelativeTo(null);
 
-        JLabel label = new JLabel("This is Window 2", SwingConstants.CENTER);
-        add(label);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
+        JLabel label = new JLabel("New Window added", SwingConstants.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Go Back Button
+        JButton goBackButton = new JButton("Go Back");
+        goBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        panel.add(label);
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+        panel.add(goBackButton);
+
+        add(panel);
         setVisible(true);
     }
 }
 
-class ProfileHistory extends JFrame {
+//Window 3
+class Window3 extends JFrame {
+    public Window3() {
+        setTitle("Select Window System");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        JLabel label = new JLabel("Select window to display");
+        JComboBox<String> comboBoxWindows = new JComboBox<>(new String[]{
+                "Window 1", "Window 2", "Window 3", "Window 4"
+        });
+        JButton openWindowButton = new JButton("Select window");
+
+        add(label);
+        add(comboBoxWindows);
+        add(openWindowButton);
+
+        openWindowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedWindow = (String) comboBoxWindows.getSelectedItem();
+                if (selectedWindow.equals("Window 1")) {
+                    new Window1().setVisible(true);
+                } else if (selectedWindow.equals("Window 2")) {
+                    new Window2().setVisible(true);
+                } else if (selectedWindow.equals("Window 3")) {
+                    new Window3().setVisible(true);
+                } else if (selectedWindow.equals("Window 4")) {
+                    new Window4().setVisible(true);
+                }
+            }
+        });
+
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+}
+
+//Window 4
+class Window4 extends JFrame {
     private JPanel formPanel, tablePanel;
     private JTextField designerNameField, dateField, emailField, contactField, versionField;
     private DefaultTableModel tableModel;
     private CardLayout cardLayout;
 
-    public ProfileHistory() {
+    public Window4() {
         setTitle("Profile History");
-        setSize(600, 400);
+        setSize(600, 450);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Use CardLayout to switch between panels
         cardLayout = new CardLayout();
         JPanel mainPanel = new JPanel(cardLayout);
 
-        // ========== Panel 1: Project Details Form ==========
-        formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(6, 2, 10, 10));
-        formPanel.setBorder(BorderFactory.createTitledBorder("PROJECT DETAILS"));
+        formPanel = new JPanel(new BorderLayout());
+        formPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Add Labels and Fields
-        formPanel.add(new JLabel("Designer Name:"));
+        JLabel titleLabel = new JLabel("THE PROJECT DETAILS", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        formPanel.add(titleLabel, BorderLayout.NORTH);
+
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+
+        inputPanel.add(new JLabel("DESIGNER NAMES:"));
         designerNameField = new JTextField();
-        formPanel.add(designerNameField);
+        inputPanel.add(designerNameField);
 
-        formPanel.add(new JLabel("Date (YYYY-MM-DD):"));
+        inputPanel.add(new JLabel("DATE (YEAR, MONTH, DAY):"));
         dateField = new JTextField();
-        formPanel.add(dateField);
+        inputPanel.add(dateField);
 
-        formPanel.add(new JLabel("Contact Email Address:"));
+        inputPanel.add(new JLabel("CONTACT EMAIL ADDRESS:"));
         emailField = new JTextField();
-        formPanel.add(emailField);
+        inputPanel.add(emailField);
 
-        formPanel.add(new JLabel("Contact Number:"));
+        inputPanel.add(new JLabel("CONTACT NUMBER:"));
         contactField = new JTextField();
-        formPanel.add(contactField);
+        inputPanel.add(contactField);
 
-        formPanel.add(new JLabel("Version Number:"));
+        inputPanel.add(new JLabel("VERSION NUMBER:"));
         versionField = new JTextField();
-        formPanel.add(versionField);
+        inputPanel.add(versionField);
 
-        // Buttons Panel
-        JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Add to Profile");
+        formPanel.add(inputPanel, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JButton addButton = new JButton("Add to the Profile");
+        JButton formBackButton = new JButton("Back");
         buttonPanel.add(addButton);
+        buttonPanel.add(formBackButton);
 
-        formPanel.add(buttonPanel);
+        formPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // ========== Panel 2: Table View ==========
         tablePanel = new JPanel(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder("Profile Table"));
 
-        String[] columnNames = {"Names", "Date", "Email", "Contact No", "Version"};
+        String[] columnNames = {"Names", "Date", "Email", "Contact no.", "Version"};
         tableModel = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton backButton = new JButton("Back");
-        JPanel tableButtonPanel = new JPanel();
-        tableButtonPanel.add(backButton);
+        JButton tableBackButton = new JButton("Back");
+        JPanel tableButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        tableButtonPanel.add(tableBackButton);
 
         tablePanel.add(scrollPane, BorderLayout.CENTER);
         tablePanel.add(tableButtonPanel, BorderLayout.SOUTH);
 
-        // ========== Add Panels to CardLayout ==========
         mainPanel.add(formPanel, "FormPanel");
         mainPanel.add(tablePanel, "TablePanel");
 
-        // Add the main panel to the JFrame
         add(mainPanel);
 
-        // ========== Button Actions ==========
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get data from fields
                 String name = designerNameField.getText();
                 String date = dateField.getText();
                 String email = emailField.getText();
                 String contact = contactField.getText();
                 String version = versionField.getText();
 
-                // Add to table
                 tableModel.addRow(new Object[]{name, date, email, contact, version});
 
-                // Clear input fields
                 designerNameField.setText("");
                 dateField.setText("");
                 emailField.setText("");
                 contactField.setText("");
                 versionField.setText("");
 
-                // Show Table Panel
+                JOptionPane.showMessageDialog(Window4.this, "Profile added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 cardLayout.show(mainPanel, "TablePanel");
             }
         });
 
-        backButton.addActionListener(new ActionListener() {
+        formBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Show Form Panel again
+                dispose();
+            }
+        });
+
+        tableBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 cardLayout.show(mainPanel, "FormPanel");
             }
         });
